@@ -1,0 +1,45 @@
+---
+title: "Economic and Health Effects of Weather Events"
+author: "Thomas Barrett"
+date: "December 24, 2018"
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+## Synopsis
+
+## Data Processing
+```{r libraries}
+library(R.utils)
+library(data.table)
+library(stringdist)
+
+```
+
+```{r reading the data, cache=TRUE}
+remote_file <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+local_file <- "rawdata.csv.bz2"
+unzipped_file <- "rawdata.csv"
+
+wd <- getwd()
+print(paste("Your working directory is set to", wd))
+
+download.file(remote_file, local_file)
+bunzip2(local_file, unzipped_file, skip = TRUE, remove = FALSE)
+df <- fread(unzipped_file)
+head(df)
+```
+
+```{r data processing}
+
+```
+
+## Results
+
+```{r results}
+
+```
+
