@@ -157,7 +157,29 @@ $(document).ready(function () {
 ## 
 ##     cat, commandArgs, getOption, inherits, isOpen, parse, warnings</code></pre>
 <pre class="r"><code>library(data.table)
-library(stringdist)</code></pre>
+library(stringdist)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:data.table':
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: 'lubridate'</code></pre>
+<pre><code>## The following objects are masked from 'package:data.table':
+## 
+##     hour, isoweek, mday, minute, month, quarter, second, wday,
+##     week, yday, year</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     date</code></pre>
 <pre class="r"><code>remote_file &lt;- &quot;https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2&quot;
 local_file &lt;- &quot;rawdata.csv.bz2&quot;
 unzipped_file &lt;- &quot;rawdata.csv&quot;
@@ -166,11 +188,8 @@ wd &lt;- getwd()
 print(paste(&quot;Your working directory is set to&quot;, wd))</code></pre>
 <pre><code>## [1] &quot;Your working directory is set to C:/Users/stick/data science/coursera/Reproducible Research/Week 4 Project&quot;</code></pre>
 <pre class="r"><code>download.file(remote_file, local_file)
-bunzip2(local_file, unzipped_file, skip = TRUE, remove = FALSE)</code></pre>
-<pre><code>## [1] &quot;rawdata.csv&quot;
-## attr(,&quot;temporary&quot;)
-## [1] FALSE</code></pre>
-<pre class="r"><code>df &lt;- fread(unzipped_file)
+bunzip2(local_file, unzipped_file, skip = TRUE, remove = FALSE)
+df &lt;- fread(unzipped_file)
 head(df)</code></pre>
 <pre><code>##    STATE__           BGN_DATE BGN_TIME TIME_ZONE COUNTY COUNTYNAME STATE
 ## 1:       1  4/18/1950 0:00:00     0130       CST     97     MOBILE    AL
@@ -207,6 +226,24 @@ head(df)</code></pre>
 ## 4:     3458      8626          0          0              4
 ## 5:     3412      8642          0          0              5
 ## 6:     3450      8748          0          0              6</code></pre>
+<pre class="r"><code>cutoff &lt;- ymd_hms(&quot;1996 Jan 01 0:00:00&quot;)
+new_df &lt;- df %&gt;% mutate(date = mdy_hms(BGN_DATE)) %&gt;% filter(date &gt;= cutoff) %&gt;%
+        select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg = CROPDMG, crop_dmg_exp = CROPDMGEXP)
+head(new_df)</code></pre>
+<pre><code>##         date   event_type fatalities injuries prop_dmg prop_dmg_exp
+## 1 1996-01-06 WINTER STORM          0        0      380            K
+## 2 1996-01-11      TORNADO          0        0      100            K
+## 3 1996-01-11    TSTM WIND          0        0        3            K
+## 4 1996-01-11    TSTM WIND          0        0        5            K
+## 5 1996-01-11    TSTM WIND          0        0        2            K
+## 6 1996-01-18         HAIL          0        0        0             
+##   crop_dmg crop_dmg_exp
+## 1       38            K
+## 2        0             
+## 3        0             
+## 4        0             
+## 5        0             
+## 6        0</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>

@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo=TRUE)
 library(R.utils)
 library(data.table)
 library(stringdist)
+library(dplyr)
+library(lubridate)
 
 ```
 
@@ -33,7 +35,12 @@ df <- fread(unzipped_file)
 head(df)
 ```
 
-```{r data processing}
+```{r data processing, cache=TRUE}
+
+cutoff <- ymd_hms("1996 Jan 01 0:00:00")
+new_df <- df %>% mutate(date = mdy_hms(BGN_DATE)) %>% filter(date >= cutoff) %>%
+        select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg = CROPDMG, crop_dmg_exp = CROPDMGEXP)
+head(new_df)
 
 ```
 
