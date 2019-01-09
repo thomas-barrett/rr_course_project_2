@@ -227,23 +227,52 @@ head(df)</code></pre>
 ## 5:     3412      8642          0          0              5
 ## 6:     3450      8748          0          0              6</code></pre>
 <pre class="r"><code>cutoff &lt;- ymd_hms(&quot;1996 Jan 01 0:00:00&quot;)
-new_df &lt;- df %&gt;% mutate(date = mdy_hms(BGN_DATE)) %&gt;% filter(date &gt;= cutoff) %&gt;%
-        select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg = CROPDMG, crop_dmg_exp = CROPDMGEXP)
-head(new_df)</code></pre>
-<pre><code>##         date   event_type fatalities injuries prop_dmg prop_dmg_exp
-## 1 1996-01-06 WINTER STORM          0        0      380            K
-## 2 1996-01-11      TORNADO          0        0      100            K
-## 3 1996-01-11    TSTM WIND          0        0        3            K
-## 4 1996-01-11    TSTM WIND          0        0        5            K
-## 5 1996-01-11    TSTM WIND          0        0        2            K
-## 6 1996-01-18         HAIL          0        0        0             
-##   crop_dmg crop_dmg_exp
-## 1       38            K
-## 2        0             
-## 3        0             
-## 4        0             
-## 5        0             
-## 6        0</code></pre>
+df2 &lt;- df %&gt;% mutate(date = mdy_hms(BGN_DATE)) %&gt;% filter(date &gt;= cutoff) %&gt;% 
+        select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg_val = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg_val = CROPDMG, crop_dmg_exp = CROPDMGEXP)
+head(df2)</code></pre>
+<pre><code>##         date   event_type fatalities injuries prop_dmg_val prop_dmg_exp
+## 1 1996-01-06 WINTER STORM          0        0          380            K
+## 2 1996-01-11      TORNADO          0        0          100            K
+## 3 1996-01-11    TSTM WIND          0        0            3            K
+## 4 1996-01-11    TSTM WIND          0        0            5            K
+## 5 1996-01-11    TSTM WIND          0        0            2            K
+## 6 1996-01-18         HAIL          0        0            0             
+##   crop_dmg_val crop_dmg_exp
+## 1           38            K
+## 2            0             
+## 3            0             
+## 4            0             
+## 5            0             
+## 6            0</code></pre>
+<pre class="r"><code>exp_p &lt;- df2$prop_dmg_exp
+exp_c &lt;- df2$crop_dmg_exp
+
+mult_p &lt;- integer(length(exp_p))
+mult_c &lt;- integer(length(exp_c))
+
+mult_p[which(exp_p == &quot;&quot;)] &lt;- 0
+mult_p[which(exp_p == &quot;0&quot;)] &lt;- 10
+mult_p[which(exp_p == &quot;K&quot;)] &lt;- 10^3
+mult_p[which(exp_p == &quot;M&quot;)] &lt;- 10^6
+mult_p[which(exp_p == &quot;B&quot;)] &lt;- 10^9
+
+mult_c[which(exp_c == &quot;&quot;)] &lt;- 0
+mult_c[which(exp_c == &quot;0&quot;)] &lt;- 10
+mult_c[which(exp_c == &quot;K&quot;)] &lt;- 10^3
+mult_c[which(exp_c == &quot;M&quot;)] &lt;- 10^6
+mult_c[which(exp_c == &quot;B&quot;)] &lt;- 10^9
+
+df3 &lt;- df2 %&gt;% mutate(event_type = tolower(event_type), prop_dmg = prop_dmg_val*mult_p,
+                      crop_dmg = crop_dmg_val*mult_c) %&gt;%
+        select(date, event_type, fatalities, injuries, prop_dmg, crop_dmg)
+head(df3)</code></pre>
+<pre><code>##         date   event_type fatalities injuries prop_dmg crop_dmg
+## 1 1996-01-06 winter storm          0        0   380000    38000
+## 2 1996-01-11      tornado          0        0   100000        0
+## 3 1996-01-11    tstm wind          0        0     3000        0
+## 4 1996-01-11    tstm wind          0        0     5000        0
+## 5 1996-01-11    tstm wind          0        0     2000        0
+## 6 1996-01-18         hail          0        0        0        0</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>

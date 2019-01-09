@@ -38,9 +38,34 @@ head(df)
 ```{r data processing, cache=TRUE}
 
 cutoff <- ymd_hms("1996 Jan 01 0:00:00")
-new_df <- df %>% mutate(date = mdy_hms(BGN_DATE)) %>% filter(date >= cutoff) %>%
-        select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg = CROPDMG, crop_dmg_exp = CROPDMGEXP)
-head(new_df)
+df2 <- df %>% mutate(date = mdy_hms(BGN_DATE)) %>% filter(date >= cutoff) %>% 
+        select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg_val = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg_val = CROPDMG, crop_dmg_exp = CROPDMGEXP)
+head(df2)
+
+exp_p <- df2$prop_dmg_exp
+exp_c <- df2$crop_dmg_exp
+
+mult_p <- integer(length(exp_p))
+mult_c <- integer(length(exp_c))
+
+mult_p[which(exp_p == "")] <- 0
+mult_p[which(exp_p == "0")] <- 10
+mult_p[which(exp_p == "K")] <- 10^3
+mult_p[which(exp_p == "M")] <- 10^6
+mult_p[which(exp_p == "B")] <- 10^9
+
+mult_c[which(exp_c == "")] <- 0
+mult_c[which(exp_c == "0")] <- 10
+mult_c[which(exp_c == "K")] <- 10^3
+mult_c[which(exp_c == "M")] <- 10^6
+mult_c[which(exp_c == "B")] <- 10^9
+
+df3 <- df2 %>% mutate(event_type = tolower(event_type), prop_dmg = prop_dmg_val*mult_p,
+                      crop_dmg = crop_dmg_val*mult_c) %>%
+        select(date, event_type, fatalities, injuries, prop_dmg, crop_dmg)
+head(df3)
+
+
 
 ```
 
