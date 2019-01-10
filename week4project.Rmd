@@ -66,6 +66,23 @@ df3 <- df2 %>% mutate(event_type = tolower(event_type), prop_dmg = prop_dmg_val*
 head(df3)
 
 
+rough_types <- unique(df3$event_type)
+summaries <- rough_types[grep(pattern = "summary", rough_types)]
+
+df4 <- df3 %>% filter(!(event_type %in% summaries))
+
+uniq_types <- unique(df4$event_type)
+types <- c("astronomical low tide","avalanche","blizzard","coastal flood","cold/wind chill",
+           "debris flow","dense fog","dense smoke","drought","dust devil","dust storm",
+           "excessive heat","extreme cold/wind chill","flash flood","flood","frost/freeze",
+           "funnel cloud","freezing fog","hail","heat","heavy rain","heavy snow","high surf",
+           "high wind","hurricane (typhoon)","ice storm","lake-effect snow","lakeshore flood",
+           "lightning","marine hail","marine high wind","marine strong wind","marine thunderstorm wind",
+           "rip current","seiche","sleet","storm surge/tide","strong wind","thunderstorm wind",
+           "tornado","tropical depression","tropical storm","tsunami","volcanic ash",
+           "waterspout","wildfire","winter storm","winter weather")
+
+
 
 ```
 
@@ -74,4 +91,3 @@ head(df3)
 ```{r results}
 
 ```
-
