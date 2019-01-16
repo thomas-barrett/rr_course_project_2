@@ -170,9 +170,24 @@ library(dplyr)</code></pre>
 <pre><code>## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(plyr)</code></pre>
+<pre><code>## -------------------------------------------------------------------------</code></pre>
+<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
+## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+## library(plyr); library(dplyr)</code></pre>
+<pre><code>## -------------------------------------------------------------------------</code></pre>
+<pre><code>## 
+## Attaching package: 'plyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:dplyr':
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize</code></pre>
 <pre class="r"><code>library(lubridate)</code></pre>
 <pre><code>## 
 ## Attaching package: 'lubridate'</code></pre>
+<pre><code>## The following object is masked from 'package:plyr':
+## 
+##     here</code></pre>
 <pre><code>## The following objects are masked from 'package:data.table':
 ## 
 ##     hour, isoweek, mday, minute, month, quarter, second, wday,
@@ -281,7 +296,6 @@ summaries &lt;- rough_types[grep(pattern = &quot;summary&quot;, rough_types)]
 
 df4 &lt;- df3 %&gt;% filter(!(event_type %in% summaries))
 
-uniq_types &lt;- unique(df4$event_type)
 types &lt;- c(&quot;astronomical low tide&quot;,&quot;avalanche&quot;,&quot;blizzard&quot;,&quot;coastal flood&quot;,&quot;cold/wind chill&quot;,
            &quot;debris flow&quot;,&quot;dense fog&quot;,&quot;dense smoke&quot;,&quot;drought&quot;,&quot;dust devil&quot;,&quot;dust storm&quot;,
            &quot;excessive heat&quot;,&quot;extreme cold/wind chill&quot;,&quot;flash flood&quot;,&quot;flood&quot;,&quot;frost/freeze&quot;,
@@ -290,7 +304,30 @@ types &lt;- c(&quot;astronomical low tide&quot;,&quot;avalanche&quot;,&quot;bliz
            &quot;lightning&quot;,&quot;marine hail&quot;,&quot;marine high wind&quot;,&quot;marine strong wind&quot;,&quot;marine thunderstorm wind&quot;,
            &quot;rip current&quot;,&quot;seiche&quot;,&quot;sleet&quot;,&quot;storm surge/tide&quot;,&quot;strong wind&quot;,&quot;thunderstorm wind&quot;,
            &quot;tornado&quot;,&quot;tropical depression&quot;,&quot;tropical storm&quot;,&quot;tsunami&quot;,&quot;volcanic ash&quot;,
-           &quot;waterspout&quot;,&quot;wildfire&quot;,&quot;winter storm&quot;,&quot;winter weather&quot;)</code></pre>
+           &quot;waterspout&quot;,&quot;wildfire&quot;,&quot;winter storm&quot;,&quot;winter weather&quot;)
+
+positions &lt;- amatch(df4$event_type, types, maxDist = 0.1, method = &quot;jw&quot;)
+replacements &lt;- types[positions]
+df4$event_type[!is.na(replacements)] &lt;- replacements[!is.na(replacements)]
+
+
+
+#######################
+## Use mapvalues function from plyr package!
+#######################
+
+
+###################
+## REMOVE ME NEXT SESSION
+###################
+
+## positions &lt;- amatch(uniq_types, types, maxDist = 0.1, method = &quot;jw&quot;)
+## temp_matrix &lt;- cbind(uniq_types, types[positions])
+## compare &lt;- as.data.frame(temp_matrix)
+## head(compare, n = 10)
+
+###################
+###################</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>

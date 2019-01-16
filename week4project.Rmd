@@ -17,6 +17,7 @@ library(R.utils)
 library(data.table)
 library(stringdist)
 library(dplyr)
+library(plyr)
 library(lubridate)
 
 ```
@@ -71,7 +72,6 @@ summaries <- rough_types[grep(pattern = "summary", rough_types)]
 
 df4 <- df3 %>% filter(!(event_type %in% summaries))
 
-uniq_types <- unique(df4$event_type)
 types <- c("astronomical low tide","avalanche","blizzard","coastal flood","cold/wind chill",
            "debris flow","dense fog","dense smoke","drought","dust devil","dust storm",
            "excessive heat","extreme cold/wind chill","flash flood","flood","frost/freeze",
@@ -82,7 +82,28 @@ types <- c("astronomical low tide","avalanche","blizzard","coastal flood","cold/
            "tornado","tropical depression","tropical storm","tsunami","volcanic ash",
            "waterspout","wildfire","winter storm","winter weather")
 
+positions <- amatch(df4$event_type, types, maxDist = 0.1, method = "jw")
+replacements <- types[positions]
+df4$event_type[!is.na(replacements)] <- replacements[!is.na(replacements)]
 
+
+
+#######################
+## Use mapvalues function from plyr package!
+#######################
+
+
+###################
+## REMOVE ME NEXT SESSION
+###################
+
+## positions <- amatch(uniq_types, types, maxDist = 0.1, method = "jw")
+## temp_matrix <- cbind(uniq_types, types[positions])
+## compare <- as.data.frame(temp_matrix)
+## head(compare, n = 10)
+
+###################
+###################
 
 ```
 
