@@ -86,6 +86,8 @@ positions <- amatch(df4$event_type, types, maxDist = 0.1, method = "jw")
 replacements <- types[positions]
 df4$event_type[!is.na(replacements)] <- replacements[!is.na(replacements)]
 
+uniq_types <- unique(df4$event_type)
+
 
 
 #######################

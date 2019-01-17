@@ -310,6 +310,8 @@ positions &lt;- amatch(df4$event_type, types, maxDist = 0.1, method = &quot;jw&q
 replacements &lt;- types[positions]
 df4$event_type[!is.na(replacements)] &lt;- replacements[!is.na(replacements)]
 
+uniq_types &lt;- unique(df4$event_type)
+
 
 
 #######################
