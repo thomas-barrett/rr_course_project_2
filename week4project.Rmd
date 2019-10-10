@@ -86,9 +86,19 @@ positions <- amatch(df4$event_type, types, maxDist = 0.1, method = "jw")
 replacements <- types[positions]
 df4$event_type[!is.na(replacements)] <- replacements[!is.na(replacements)]
 
-uniq_types <- unique(df4$event_type)
+df5 <- df4 %>% filter(fatalities > 0 | injuries > 0 |  prop_dmg > 0 | crop_dmg > 0)
+
+uniq_types <- unique(df5$event_type)
 
 
+
+############################################
+## Note for next session: Cut down the work involved in
+## mapping event names to the 48 standard types by eliminating
+## rows of the data frame that have 0 for property damage, crop
+## damage, injuries and fatalities! Also consider eliminating
+## even more, using your judgement.
+###########################################
 
 #######################
 ## Use mapvalues function from plyr package!
