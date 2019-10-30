@@ -556,6 +556,41 @@ df5 &lt;- df4 %&gt;% filter(fatalities &gt; 0 | injuries &gt; 0 |  prop_dmg &gt;
 
 uniq_types &lt;- unique(df5$event_type)
 
+map_vector &lt;- c(&quot;winter storm&quot;,&quot;tornado&quot;,&quot;thunderstorm wind&quot;,&quot;high wind&quot;,&quot;flash flood&quot;,
+                              &quot;ice storm&quot;,&quot;extreme cold/wind chill&quot;,&quot;lightning&quot;,&quot;hail&quot;,&quot;flood&quot;,
+                              &quot;thunderstorm wind&quot;,&quot;excessive heat&quot;,&quot;rip current&quot;,NA,&quot;heavy snow&quot;,&quot;wildfire&quot;,
+                              &quot;heavy snow&quot;,&quot;blizzard&quot;,&quot;storm surge/tide&quot;,&quot;flood&quot;,&quot;dust storm&quot;,&quot;strong wind&quot;,
+                              &quot;dust devil&quot;,&quot;flood&quot;,&quot;dense fog&quot;,&quot;high surf&quot;,&quot;high surf&quot;,&quot;heavy rain&quot;,NA,
+                              &quot;avalanche&quot;,&quot;frost/freeze&quot;,NA,&quot;strong wind&quot;,NA,&quot;coastal flood&quot;,&quot;flood&quot;,
+                              &quot;waterspout&quot;,&quot;frost/freeze&quot;,&quot;hurricane (typhoon)&quot;,&quot;tropical storm&quot;,NA,
+                              &quot;high surf&quot;,&quot;heavy rain&quot;,&quot;extreme cold/wind chill&quot;,&quot;frost/freeze&quot;,&quot;winter storm&quot;,
+                              &quot;drought&quot;,&quot;coastal flood&quot;,&quot;heavy rain&quot;,NA,&quot;hurricane (typhoon)&quot;,&quot;coastal flood&quot;,
+                              &quot;extreme cold/wind chill&quot;,&quot;frost/freeze&quot;,&quot;extreme cold/wind chill&quot;,&quot;dust devil&quot;,
+                              &quot;heavy snow&quot;,NA,NA,&quot;cold/wind chill&quot;,&quot;frost/freeze&quot;,NA,&quot;debris flow&quot;,NA,
+                              &quot;debris flow&quot;,&quot;heavy snow&quot;,&quot;winter weather&quot;,&quot;high wind&quot;,NA,&quot;ice storm&quot;,
+                              &quot;strong wind&quot;,&quot;strong wind&quot;,&quot;strong wind&quot;,&quot;cold/wind chill&quot;,&quot;heat&quot;,
+                              &quot;cold/wind chill&quot;,&quot;heavy rain&quot;,&quot;thunderstorm wind&quot;,&quot;strong wind&quot;,&quot;strong wind&quot;,
+                              &quot;thunderstorm wind&quot;,&quot;thunderstorm wind&quot;,&quot;frost/freeze&quot;,&quot;thunderstorm wind&quot;,
+                              &quot;heat&quot;,&quot;flood&quot;,&quot;thunderstorm wind&quot;,&quot;debris flow&quot;,&quot;frost/freeze&quot;,&quot;frost/freeze&quot;,
+                              &quot;frost/freeze&quot;,&quot;winter weather&quot;,&quot;winter weather&quot;,&quot;frost/freeze&quot;,
+                              &quot;thunderstorm wind&quot;,NA,&quot;lake-effect snow&quot;,&quot;winter weather&quot;,&quot;frost/freeze&quot;,NA,
+                              &quot;flash flood&quot;,&quot;winter weather&quot;,&quot;frost/freeze&quot;,NA,&quot;extreme cold/wind chill&quot;,
+                              &quot;thunderstorm wind&quot;,NA,&quot;high surf&quot;,&quot;funnel cloud&quot;,&quot;hurricane (typhoon)&quot;,
+                              &quot;debris flow&quot;,NA,&quot;hail&quot;,&quot;heavy rain&quot;,&quot;coastal flood&quot;,&quot;thunderstorm wind&quot;,
+                              &quot;thunderstorm wind&quot;,&quot;high wind&quot;,&quot;thunderstorm wind&quot;,NA,&quot;heat&quot;,&quot;seiche&quot;,
+                              &quot;coastal flood&quot;,&quot;heat&quot;,&quot;debris flow&quot;,&quot;hail&quot;,NA,&quot;thunderstorm wind&quot;,&quot;tornado&quot;,
+                              &quot;heat&quot;,&quot;heavy snow&quot;,&quot;flash flood&quot;,&quot;strong wind&quot;,&quot;flash flood&quot;,&quot;ice storm&quot;,
+                              &quot;frost/freeze&quot;,&quot;high surf&quot;,&quot;heavy rain&quot;,NA,&quot;thunderstorm wind&quot;,&quot;strong wind&quot;,
+                              &quot;heat&quot;,&quot;debris flow&quot;,&quot;storm surge/tide&quot;,&quot;flash flood&quot;,&quot;heavy snow&quot;,NA,NA,
+                              &quot;strong wind&quot;,&quot;strong wind&quot;,&quot;wildfire&quot;,&quot;dust storm&quot;,&quot;volcanic ash&quot;,&quot;high surf&quot;,
+                              &quot;high surf&quot;,&quot;wildfire&quot;,&quot;cold/wind chill&quot;,&quot;frost/freeze&quot;,NA,
+                              &quot;extreme cold/wind chill&quot;,&quot;marine thunderstorm wind&quot;,&quot;hurricane (typhoon)&quot;,
+                              &quot;dense fog&quot;,&quot;storm surge/tide&quot;,&quot;high surf&quot;,&quot;tropical depression&quot;,
+                              &quot;lake-effect snow&quot;,&quot;marine high wind&quot;,&quot;tsunami&quot;,&quot;storm surge/tide&quot;,
+                              &quot;cold/wind chill&quot;,&quot;lakeshore flood&quot;,&quot;marine thunderstorm wind&quot;,
+                              &quot;marine strong wind&quot;,NA,&quot;dense smoke&quot;,&quot;marine hail&quot;,&quot;freezing fog&quot;)
+
+df5$event_type &lt;- mapvalues(df5$event_type, uniq_types, map_vector)
 
 
 ############################################

@@ -90,6 +90,41 @@ df5 <- df4 %>% filter(fatalities > 0 | injuries > 0 |  prop_dmg > 0 | crop_dmg >
 
 uniq_types <- unique(df5$event_type)
 
+map_vector <- c("winter storm","tornado","thunderstorm wind","high wind","flash flood",
+                              "ice storm","extreme cold/wind chill","lightning","hail","flood",
+                              "thunderstorm wind","excessive heat","rip current",NA,"heavy snow","wildfire",
+                              "heavy snow","blizzard","storm surge/tide","flood","dust storm","strong wind",
+                              "dust devil","flood","dense fog","high surf","high surf","heavy rain",NA,
+                              "avalanche","frost/freeze",NA,"strong wind",NA,"coastal flood","flood",
+                              "waterspout","frost/freeze","hurricane (typhoon)","tropical storm",NA,
+                              "high surf","heavy rain","extreme cold/wind chill","frost/freeze","winter storm",
+                              "drought","coastal flood","heavy rain",NA,"hurricane (typhoon)","coastal flood",
+                              "extreme cold/wind chill","frost/freeze","extreme cold/wind chill","dust devil",
+                              "heavy snow",NA,NA,"cold/wind chill","frost/freeze",NA,"debris flow",NA,
+                              "debris flow","heavy snow","winter weather","high wind",NA,"ice storm",
+                              "strong wind","strong wind","strong wind","cold/wind chill","heat",
+                              "cold/wind chill","heavy rain","thunderstorm wind","strong wind","strong wind",
+                              "thunderstorm wind","thunderstorm wind","frost/freeze","thunderstorm wind",
+                              "heat","flood","thunderstorm wind","debris flow","frost/freeze","frost/freeze",
+                              "frost/freeze","winter weather","winter weather","frost/freeze",
+                              "thunderstorm wind",NA,"lake-effect snow","winter weather","frost/freeze",NA,
+                              "flash flood","winter weather","frost/freeze",NA,"extreme cold/wind chill",
+                              "thunderstorm wind",NA,"high surf","funnel cloud","hurricane (typhoon)",
+                              "debris flow",NA,"hail","heavy rain","coastal flood","thunderstorm wind",
+                              "thunderstorm wind","high wind","thunderstorm wind",NA,"heat","seiche",
+                              "coastal flood","heat","debris flow","hail",NA,"thunderstorm wind","tornado",
+                              "heat","heavy snow","flash flood","strong wind","flash flood","ice storm",
+                              "frost/freeze","high surf","heavy rain",NA,"thunderstorm wind","strong wind",
+                              "heat","debris flow","storm surge/tide","flash flood","heavy snow",NA,NA,
+                              "strong wind","strong wind","wildfire","dust storm","volcanic ash","high surf",
+                              "high surf","wildfire","cold/wind chill","frost/freeze",NA,
+                              "extreme cold/wind chill","marine thunderstorm wind","hurricane (typhoon)",
+                              "dense fog","storm surge/tide","high surf","tropical depression",
+                              "lake-effect snow","marine high wind","tsunami","storm surge/tide",
+                              "cold/wind chill","lakeshore flood","marine thunderstorm wind",
+                              "marine strong wind",NA,"dense smoke","marine hail","freezing fog")
+
+df5$event_type <- mapvalues(df5$event_type, uniq_types, map_vector)
 
 
 ############################################
