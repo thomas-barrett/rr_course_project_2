@@ -16,8 +16,8 @@ knitr::opts_chunk$set(echo=TRUE)
 library(R.utils)
 library(data.table)
 library(stringdist)
-library(dplyr)
 library(plyr)
+library(dplyr)
 library(lubridate)
 
 ```
@@ -126,6 +126,9 @@ map_vector <- c("winter storm","tornado","thunderstorm wind","high wind","flash 
 
 df5$event_type <- mapvalues(df5$event_type, uniq_types, map_vector)
 
+df6 <- tbl_df(df5)
+by_event <- group_by(df6, event_type)
+summarize(by_event, injuries = sum(injuries))
 
 ############################################
 ## Note for next session: Cut down the work involved in

@@ -379,18 +379,18 @@ summary {
 <pre><code>## Loading required package: R.oo</code></pre>
 <pre><code>## Loading required package: R.methodsS3</code></pre>
 <pre><code>## R.methodsS3 v1.7.1 (2016-02-15) successfully loaded. See ?R.methodsS3 for help.</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;R.oo&#39;:
-##   method        from       
-##   throw.default R.methodsS3</code></pre>
-<pre><code>## R.oo v1.22.0 (2018-04-21) successfully loaded. See ?R.oo for help.</code></pre>
+<pre><code>## R.oo v1.23.0 successfully loaded. See ?R.oo for help.</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;R.oo&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:R.methodsS3&#39;:
+## 
+##     throw</code></pre>
 <pre><code>## The following objects are masked from &#39;package:methods&#39;:
 ## 
 ##     getClasses, getMethods</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
-##     attach, detach, gc, load, save</code></pre>
+##     attach, detach, load, save</code></pre>
 <pre><code>## R.utils v2.9.0 successfully loaded. See ?R.utils for help.</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;R.utils&#39;</code></pre>
@@ -399,13 +399,18 @@ summary {
 ##     timestamp</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
-##     cat, commandArgs, getOption, inherits, isOpen, nullfile,
-##     parse, warnings</code></pre>
+##     cat, commandArgs, getOption, inherits, isOpen, nullfile, parse,
+##     warnings</code></pre>
 <pre class="r"><code>library(data.table)
 library(stringdist)
+library(plyr)
 library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:plyr&#39;:
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize</code></pre>
 <pre><code>## The following objects are masked from &#39;package:data.table&#39;:
 ## 
 ##     between, first, last</code></pre>
@@ -415,18 +420,6 @@ library(dplyr)</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(plyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize</code></pre>
 <pre class="r"><code>library(lubridate)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
@@ -435,8 +428,8 @@ library(dplyr)</code></pre>
 ##     here</code></pre>
 <pre><code>## The following objects are masked from &#39;package:data.table&#39;:
 ## 
-##     hour, isoweek, mday, minute, month, quarter, second, wday,
-##     week, yday, year</code></pre>
+##     hour, isoweek, mday, minute, month, quarter, second, wday, week,
+##     yday, year</code></pre>
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     date</code></pre>
@@ -446,10 +439,13 @@ unzipped_file &lt;- &quot;rawdata.csv&quot;
 
 wd &lt;- getwd()
 print(paste(&quot;Your working directory is set to&quot;, wd))</code></pre>
-<pre><code>## [1] &quot;Your working directory is set to C:/Users/stick/Documents/Data Science/coursera/reproducible research/rr_course_project_2&quot;</code></pre>
+<pre><code>## [1] &quot;Your working directory is set to C:/Users/stick/Documents/Data Science/coursera/reproducible research/rr_course_project_2_new&quot;</code></pre>
 <pre class="r"><code>download.file(remote_file, local_file)
-bunzip2(local_file, unzipped_file, skip = TRUE, remove = FALSE)
-df &lt;- fread(unzipped_file)
+bunzip2(local_file, unzipped_file, skip = TRUE, remove = FALSE)</code></pre>
+<pre><code>## [1] &quot;rawdata.csv&quot;
+## attr(,&quot;temporary&quot;)
+## [1] FALSE</code></pre>
+<pre class="r"><code>df &lt;- fread(unzipped_file)
 head(df)</code></pre>
 <pre><code>##    STATE__           BGN_DATE BGN_TIME TIME_ZONE COUNTY COUNTYNAME STATE
 ## 1:       1  4/18/1950 0:00:00     0130       CST     97     MOBILE    AL
@@ -458,34 +454,34 @@ head(df)</code></pre>
 ## 4:       1   6/8/1951 0:00:00     0900       CST     89    MADISON    AL
 ## 5:       1 11/15/1951 0:00:00     1500       CST     43    CULLMAN    AL
 ## 6:       1 11/15/1951 0:00:00     2000       CST     77 LAUDERDALE    AL
-##     EVTYPE BGN_RANGE BGN_AZI BGN_LOCATI END_DATE END_TIME COUNTY_END
-## 1: TORNADO         0                                               0
-## 2: TORNADO         0                                               0
-## 3: TORNADO         0                                               0
-## 4: TORNADO         0                                               0
-## 5: TORNADO         0                                               0
-## 6: TORNADO         0                                               0
-##    COUNTYENDN END_RANGE END_AZI END_LOCATI LENGTH WIDTH F MAG FATALITIES
-## 1:         NA         0                      14.0   100 3   0          0
-## 2:         NA         0                       2.0   150 2   0          0
-## 3:         NA         0                       0.1   123 2   0          0
-## 4:         NA         0                       0.0   100 2   0          0
-## 5:         NA         0                       0.0   150 2   0          0
-## 6:         NA         0                       1.5   177 2   0          0
-##    INJURIES PROPDMG PROPDMGEXP CROPDMG CROPDMGEXP WFO STATEOFFIC ZONENAMES
-## 1:       15    25.0          K       0                                    
-## 2:        0     2.5          K       0                                    
-## 3:        2    25.0          K       0                                    
-## 4:        2     2.5          K       0                                    
-## 5:        2     2.5          K       0                                    
-## 6:        6     2.5          K       0                                    
-##    LATITUDE LONGITUDE LATITUDE_E LONGITUDE_ REMARKS REFNUM
-## 1:     3040      8812       3051       8806              1
-## 2:     3042      8755          0          0              2
-## 3:     3340      8742          0          0              3
-## 4:     3458      8626          0          0              4
-## 5:     3412      8642          0          0              5
-## 6:     3450      8748          0          0              6</code></pre>
+##     EVTYPE BGN_RANGE BGN_AZI BGN_LOCATI END_DATE END_TIME COUNTY_END COUNTYENDN
+## 1: TORNADO         0                                               0         NA
+## 2: TORNADO         0                                               0         NA
+## 3: TORNADO         0                                               0         NA
+## 4: TORNADO         0                                               0         NA
+## 5: TORNADO         0                                               0         NA
+## 6: TORNADO         0                                               0         NA
+##    END_RANGE END_AZI END_LOCATI LENGTH WIDTH F MAG FATALITIES INJURIES PROPDMG
+## 1:         0                      14.0   100 3   0          0       15    25.0
+## 2:         0                       2.0   150 2   0          0        0     2.5
+## 3:         0                       0.1   123 2   0          0        2    25.0
+## 4:         0                       0.0   100 2   0          0        2     2.5
+## 5:         0                       0.0   150 2   0          0        2     2.5
+## 6:         0                       1.5   177 2   0          0        6     2.5
+##    PROPDMGEXP CROPDMG CROPDMGEXP WFO STATEOFFIC ZONENAMES LATITUDE LONGITUDE
+## 1:          K       0                                         3040      8812
+## 2:          K       0                                         3042      8755
+## 3:          K       0                                         3340      8742
+## 4:          K       0                                         3458      8626
+## 5:          K       0                                         3412      8642
+## 6:          K       0                                         3450      8748
+##    LATITUDE_E LONGITUDE_ REMARKS REFNUM
+## 1:       3051       8806              1
+## 2:          0          0              2
+## 3:          0          0              3
+## 4:          0          0              4
+## 5:          0          0              5
+## 6:          0          0              6</code></pre>
 <pre class="r"><code>cutoff &lt;- ymd_hms(&quot;1996 Jan 01 0:00:00&quot;)
 df2 &lt;- df %&gt;% mutate(date = mdy_hms(BGN_DATE)) %&gt;% filter(date &gt;= cutoff) %&gt;% 
         select(date, event_type = EVTYPE, fatalities = FATALITIES, injuries = INJURIES, prop_dmg_val = PROPDMG, prop_dmg_exp = PROPDMGEXP, crop_dmg_val = CROPDMG, crop_dmg_exp = CROPDMGEXP)
@@ -592,8 +588,24 @@ map_vector &lt;- c(&quot;winter storm&quot;,&quot;tornado&quot;,&quot;thundersto
 
 df5$event_type &lt;- mapvalues(df5$event_type, uniq_types, map_vector)
 
-
-############################################
+df6 &lt;- tbl_df(df5)
+by_event &lt;- group_by(df6, event_type)
+summarize(by_event, injuries = sum(injuries))</code></pre>
+<pre><code>## # A tibble: 47 x 2
+##    event_type      injuries
+##    &lt;chr&gt;              &lt;dbl&gt;
+##  1 avalanche            156
+##  2 blizzard             385
+##  3 coastal flood          8
+##  4 cold/wind chill       24
+##  5 debris flow           55
+##  6 dense fog            855
+##  7 dense smoke            0
+##  8 drought                4
+##  9 dust devil            39
+## 10 dust storm           376
+## # ... with 37 more rows</code></pre>
+<pre class="r"><code>############################################
 ## Note for next session: Cut down the work involved in
 ## mapping event names to the 48 standard types by eliminating
 ## rows of the data frame that have 0 for property damage, crop
